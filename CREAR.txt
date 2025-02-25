@@ -1,0 +1,21 @@
+Instalar Symfony y Composer
+
+symfony check:requirements          Comprobar si todo esta bien para ejecutar symfony
+
+symfony new proyecto            Crear un nuevo proyecto
+
+symfony serve           Iniciar un proyecto de Symfony
+
+composer require symfony/twig-bundle            Instalar un plugin al proyecto (en este caso para manejar mejor los html)
+
+Crear un controller (como el de /src/Controller/PurebaController.php)
+
+Crear los html en /templates/ (index.html.twig)
+
+
+
+
+
+
+
+
