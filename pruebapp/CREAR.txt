@@ -7,6 +7,10 @@ symfony new proyecto            Crear un nuevo proyecto
 symfony serve           Iniciar un proyecto de Symfony
 
 composer require symfony/twig-bundle            Instalar un plugin al proyecto (en este caso para manejar mejor los html)
+composer require --dev symfony/maker-bundle         Instalar un plugin que solo funciona durante el desarrollo
+
+php bin/console list            Lista de comandos instalados para el proyecto (como maker, que se instala con --dev)
+php bin/console make:controller         Crear rapidamente un nuevo archivo de controller
 
 Crear un controller (como el de /src/Controller/PurebaController.php)
 
