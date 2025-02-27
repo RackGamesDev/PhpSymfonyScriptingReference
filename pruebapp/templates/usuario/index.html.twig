@@ -9,12 +9,8 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/yete/Escritorio/symfony/pruebapp/src/Controller/UsuarioController.php</code></li>
-        <li>Your template at <code>/home/yete/Escritorio/symfony/pruebapp/templates/usuario/index.html.twig</code></li>
-    </ul>
+    <h1>Hello {{ controller_name }}! </h1> <!--Usando variables mandadas en la respuesta del Controller-->
+    <p>{{ variable }}</p>
+    <a href="{{ path('app_usuario') }}">ver pagina</a> <!--Haciendo referencia a una url definida en un controller usando su name, tambien se puede usar url() para una url absoluta-->
 </div>
 {% endblock %}
