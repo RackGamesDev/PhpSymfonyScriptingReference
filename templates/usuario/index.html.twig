@@ -6,6 +6,14 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
 </style>
 
 <div class="example-wrapper">
@@ -13,4 +21,35 @@
     <p>{{ variable }}</p>
     <a href="{{ path('app_usuario') }}">ver pagina</a> <!--Haciendo referencia a una url definida en un controller usando su name, tambien se puede usar url() para una url absoluta-->
 </div>
+
+<h1>Usuarios</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>UUID</th>
+            <th>Nombre</th>
+            <th>Nick</th>
+            <th>Numero</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Bucle foreach en twig sin necesidad de hacer un bucle en php-->
+        {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.uuid }}</td>
+                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.nick }}</td>
+                <td>{{ usuario.numero }}</td>
+                <td>
+                    <!--Pasando parametros a un path en twig-->
+                    <a href="{{ path('app_usuario_show', {'id': usuario.id}) }}">Revisar</a>
+                </td>
+            </tr>
+        {% endfor %}
+</table>
+<a href="{{ path('app_usuario_new') }}">Nuevo</a>
+
 {% endblock %}

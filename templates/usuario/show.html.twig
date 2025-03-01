@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}un usuario{% endblock %}
+{% block body %}
+<!--Html hecho para mostrar un usuario en concreto-->
+<h1>Usuario</h1>
+<p>Id: {{ usuario.id }}</p>
+<p>uuId: {{ usuario.uuid }}</p>
+<p>nombre: {{ usuario.nombre }}</p>
+<p>nick: {{ usuario.nick }}</p>
+<p>numero: {{ usuario.numero }}</p>
+
+{% endblock %}

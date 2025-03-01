@@ -16,7 +16,7 @@ class Usuario
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::GUID)]
+    #[ORM\Column]
     private ?string $uuid = null;
 
     #[ORM\Column(length: 20)]

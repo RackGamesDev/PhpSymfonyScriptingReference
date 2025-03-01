@@ -12,6 +12,9 @@ la configuracion esta en .env y .env.dev
 composer require symfony/twig-bundle            Instalar un plugin al proyecto (en este caso para manejar mejor los html)
 composer require --dev symfony/maker-bundle         Instalar un plugin que solo funciona durante el desarrollo
 composer require --dev symfony/orm-pack         Para conectar mas facilmente con bases de datos sql
+composer require --dev orm-fixtures         Para insertar datos de ejemplo en la base de datos para hacer pruebas (se usa en el archivo DataFixtures/AppFixtures.php) (php bin/console doctrine:fixtures:load)
+composer require --dev symfony/profiler-pack        Para ver mas informacion sobre las peticiones
+composer require symfony/form           Para mejor manejo de formularios
 
 php bin/console list            Lista de comandos instalados para el proyecto (como maker, que se instala con --dev)
 php bin/console make:controller         Crear rapidamente un nuevo archivo de controller y su respectivo html.twig
@@ -21,14 +24,17 @@ Crear un controller (como el de /src/Controller/PurebaController.php)
 
 Crear los html en /templates/ (index.html.twig)
 
+
+
 Para conectar con la base de datos, hace falta el paquete de php para ese tipo de base de datos (en este caso sqlite3), configurar el .env y crear la conexion con:
 sudo systemctl restart apache2
 php bin/console cache:clear
 php bin/console doctrine:schema:update --force
 php bin/console doctrine:database:create
-
 Para crear entidades (clases listas para almacenar en la base de datos) se hace asi
-php bin/console make:entity usuario
+php bin/console make:entity usuario (por cada tabla)
+(luego se puede editar la tabla en src/Entity/Entidad.php, solo que habria que volver a migrar)
 php bin/console make:migration
-
+php bin/console doctrine:migrations:migrate
+php bin/console dbal:run-sql "SELECT * FROM USUARIO;" (ejecutar consultas)
 
