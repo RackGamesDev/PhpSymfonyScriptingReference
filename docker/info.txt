@@ -1,0 +1,14 @@
+Editar .env
+
+docker compose up
+docker compose down
+
+
+symfony check:requirements
+git congif --global user.email "LOQUESEA@AAA.AA"
+git config --global user.name "LOQUESEA"
+symfony new PROYECTO
+cd PROYECTO
+composer require PAQUETES
+symfony serve
+

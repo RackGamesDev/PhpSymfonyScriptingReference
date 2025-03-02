@@ -1,0 +1,34 @@
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile-postgres
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+
+  symfony:
+    build:
+      context: .
+      dockerfile: Dockerfile-symfony
+    container_name: symfony_container
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - GIT_COMMITTER_NAME=${GIT_COMMITTER_NAME}
+      - GIT_COMMITTER_EMAIL=${GIT_COMMITTER_EMAIL}
+    entrypoint: |
+      /bin/bash -c "
+      git config --global commit.gpgSign false;
+      git config --global user.name '${GIT_COMMITTER_NAME}';
+      git config --global user.email '${GIT_COMMITTER_EMAIL}';
+      apache2-foreground
+      "

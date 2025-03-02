@@ -1,0 +1,19 @@
+FROM php:8.2-apache
+
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libpq-dev \
+    gnupg \
+    && docker-php-ext-install pdo pdo_pgsql
+
+RUN a2enmod rewrite
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+
+WORKDIR /var/www/html
+
+EXPOSE 8000
