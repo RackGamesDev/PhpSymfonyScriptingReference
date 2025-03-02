@@ -2,34 +2,25 @@
 
 namespace App\Controller;
 
-use App\Service\CsvReader;
+use App\Services\LectorCsv;
+use App\Services\ServicioEjemplo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CsvController extends AbstractController
+class LeerCsvController extends AbstractController
 {
     private $csvReader;
-
-    public function __construct(CsvReader $csvReader)
-    {
-        $this->csvReader = $csvReader;
-    }
 
     /**
      * @Route("/csv/read", name="read_csv")
      */
-    public function readCsv(): Response
+    #[Route('/csv/read', name: 'read_csv')]
+    public function readCsv(LectorCsv $csvReader, ServicioEjemplo $ejemplo): Response
     {
-        // Path to the CSV file
-        $filePath = $this->getParameter('kernel.project_dir') . '/data/sample.csv';
-
-        // Read the CSV file
-        $data = $this->csvReader->readCsv($filePath);
-
-        // Render the data in a Twig template
-        return $this->render('csv/read.html.twig', [
-            'data' => $data,
-        ]);
+        //Ruta del csv (seria proyecto/data/datos.csv)
+        $filePath = $this->getParameter('kernel.project_dir') . '/data/datos.csv';
+        $data = $csvReader->leerCsv($filePath); //Leyendo el csv, esto dara un array de arrays
+        dd($data);
     }
 }

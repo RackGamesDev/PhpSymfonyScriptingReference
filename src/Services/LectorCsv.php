@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
 //Servicio personalizado que lee un csv y devuelve un array (el csv esta almacenado localmente)
-class CsvReader
+class LectorCsv
 {
-    public function readCsv(string $filePath): array
+    public function leerCsv(string $filePath): array
     {
         $rows = [];
         if (($handle = fopen($filePath, 'r')) !== false) {
