@@ -15,9 +15,11 @@ composer require --dev symfony/orm-pack         Para conectar mas facilmente con
 composer require --dev orm-fixtures         Para insertar datos de ejemplo en la base de datos para hacer pruebas (se usa en el archivo DataFixtures/AppFixtures.php) (php bin/console doctrine:fixtures:load)
 composer require --dev symfony/profiler-pack        Para ver mas informacion sobre las peticiones
 composer require symfony/form           Para mejor manejo de formularios
+composer require symfony/validator          Para validaciones de propiedades en servidor (se especifican en el archivo de la entity)
 
 php bin/console list            Lista de comandos instalados para el proyecto (como maker, que se instala con --dev)
 php bin/console make:controller         Crear rapidamente un nuevo archivo de controller y su respectivo html.twig
+php bin/console make:form           Crear un archivo de formulario con los datos de un entity
 php bin/console debug:router            Ver todas las rutas de los controllers
 
 Crear un controller (como el de /src/Controller/PurebaController.php)
@@ -38,3 +40,22 @@ php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 php bin/console dbal:run-sql "SELECT * FROM USUARIO;" (ejecutar consultas)
 
+
+
+
+
+
+
+
+
+
+
+
+
+cd /
+mkdir proyecto
+apt-get install software-properties-common
+apt-get update
+add-apt-repository ppa:ondrej/php
+apt-get install php8.2-intl php8.2-opcache
+symfony check:requirements

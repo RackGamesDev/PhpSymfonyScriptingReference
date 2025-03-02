@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\UsuarioRepository;
 use App\Entity\Usuario;
+use App\Form\UsuarioType;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class UsuarioController extends AbstractController
 {
@@ -44,10 +47,23 @@ final class UsuarioController extends AbstractController
     }
 
     #[Route('/usuario/nuevo', name: 'app_usuario_new')]
-    public function new(): Response{
+    public function new(Request $request, EntityManagerInterface $manager): Response{ //Recibe la request en caso de que se llegue aqui mediante el submit (POST)
         
-    
-        return $this->render('usuario/new.html.twig');
+        $usuario = new Usuario();
+
+        $form = $this->createForm(UsuarioType::class, $usuario); //Declarar un formulario html en base a una clase formulario creada para una entity (php bin/console make:form) (es mejor pasarle ya el objeto para hacer bien las validaciones del orm)
+        //Para personalizar el form se hace desde su archivo, en este caso en /src/Form/UsuarioType.php
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){ //Este codigo se ejecutara con el submit, ya que mandara a esta misma url una peticion POST con todos los datos
+            $manager->persist($usuario);
+            $manager->flush();
+            $this->redirectToRoute('app_usuario'); //Redirigir a otra pagina
+        }
+
+        return $this->render('usuario/new.html.twig', [
+            'form' => $form //Devolver el formulario para imprimirlo en el html
+        ]);
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UsuarioRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; //Importando el sistema de validaciones
 
 //Objeto instanciable hecho automaticamente con php bin/console make:usuario (listo para ser usado en el codigo y en la base de datos)
 
@@ -17,6 +18,7 @@ class Usuario
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank] //Aplicando una validacion a un campo, en este caso para que no pueda ser "", si lo es da error y no se crea el objeto
     private ?string $uuid = null;
 
     #[ORM\Column(length: 20)]

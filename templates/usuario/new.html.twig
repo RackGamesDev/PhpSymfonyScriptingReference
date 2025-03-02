@@ -2,5 +2,18 @@
 {% block title %}nuevo{% endblock %}
 {% block body %}
 
+<h1>Crear usuario</h1>
+{# {{ form(form) }} #} <!--Imprimir el form pasado en la respuesta sin modificaciones-->
+
+<!--Forma mas extensa de imprimir cada row del form-->
+{{ form_start(form) }} {# Se puede evitar la validacion de campos html con {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}    esto se usa para poner atributos html normales #}
+    {{ form_row(form.nombre) }}
+    {{ form_row(form.nick) }}
+    {{ form_row(form.numero) }}
+    {{ form_row(form.uuid) }}
+    {{ form_row(form.save, {'label': 'enviar'}) }} <!--Personalizandolo desde el html.twig-->
+{{ form_end(form) }}
+<!--Los forms automaticos se enviaran con el metodo POST a esa misma url en el submit-->
 
 {% endblock %}
+
