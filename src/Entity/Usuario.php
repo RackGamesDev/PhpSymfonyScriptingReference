@@ -28,6 +28,9 @@ class Usuario
     private ?string $nick = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Type('integer')] //Validacion para que el campo sea de tipo entero
+    #[Assert\Positive] //Validacion para que el campo sea positivo
     private ?int $numero = null;
 
     public function getId(): ?int

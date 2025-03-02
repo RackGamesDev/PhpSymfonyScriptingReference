@@ -12,7 +12,8 @@ class PruebaController extends AbstractController {
         //El codigo que se ejecutara al acceder a la ruta
         $contents = $this->renderView('home/index.html.twig'); //Leyendo un html gracias a twigs
         echo "asdf";
-        echo $_SERVER['REQUEST_METHOD'] === 'POST'; //Asi se sabe el metodo de la peticion entrante
+        echo $_SERVER['REQUEST_METHOD'];//Asi se sabe el metodo de la peticion entrante
+        //dd($contents);
         return new Response($contents); //Siempre hay que devolver una respuesta
     }
 }

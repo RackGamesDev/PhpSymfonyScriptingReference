@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class UsuarioController extends AbstractController
 {
+
     #[Route('/usuario', name: 'app_usuario')] //Se le pone tanto la url como un nombre
     public function index(UsuarioRepository $repository): Response //El objeto que usa por parametros se manda desde el servicio, un EntityRepository sirve para manejar consultas relacionadas con esa tabla
     {
@@ -55,10 +56,12 @@ final class UsuarioController extends AbstractController
         //Para personalizar el form se hace desde su archivo, en este caso en /src/Form/UsuarioType.php
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()){ //Este codigo se ejecutara con el submit, ya que mandara a esta misma url una peticion POST con todos los datos
+        if ($form->isSubmitted() && $form->isValid()){ //Este codigo se ejecutara con el submit, ya que mandara a esta misma url una peticion POST con todos los datos (el isValid es para comprobar las validaciones)
             $manager->persist($usuario);
-            $manager->flush();
-            $this->redirectToRoute('app_usuario'); //Redirigir a otra pagina
+            $manager->flush(); //Insertar en la base de datos
+            $idmostrar = $usuario->getId();
+            //ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ
+            return $this->redirectToRoute('app_usuario', ['mensajeextra' => "<h2>Usuario $idmostrar creado con exito</h2>"]); //Redirigir a otra pagina
         }
 
         return $this->render('usuario/new.html.twig', [
