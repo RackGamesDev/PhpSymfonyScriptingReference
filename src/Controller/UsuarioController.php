@@ -10,20 +10,23 @@ use App\Entity\Usuario;
 use App\Form\UsuarioType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class UsuarioController extends AbstractController
 {
 
     #[Route('/usuario', name: 'app_usuario')] //Se le pone tanto la url como un nombre
-    public function index(UsuarioRepository $repository): Response //El objeto que usa por parametros se manda desde el servicio, un EntityRepository sirve para manejar consultas relacionadas con esa tabla
+    public function index(UsuarioRepository $repository, SessionInterface $session): Response //El objeto que usa por parametros se manda desde el servicio, un EntityRepository sirve para manejar consultas relacionadas con esa tabla
     {
+        $mensajeextra = $session->get('mensajeextra', ''); //Recoger un valor de las cookies de la sesion (en este caso se usara para una notificacion)
+        $session->set('mensajeextra', ''); //Guardar un valor en las cookies de la sesion
         //$usuarios = $repository->findAll(); //Se obtienen todos los registros de la tabla gracias al Repository
         $usuarios = $repository->findBy([], ['id' => 'ASC']); //Se obtienen todos los registros de la tabla ordenados por el campo nombre de forma ascendente
 
-        dump($usuarios); //Mostrar rapidamente variables en el html
+        //dump($usuarios); //Mostrar rapidamente variables en el html, IMPORTANTE: Solo se puede usar en desarrollo o las sesiones fallaran
         //dd($usuarios); //Hace lo mismo pero detiene la ejecucion devolviendo una respuesta
         return $this->render('usuario/index.html.twig', [
-            'controller_name' => 'UsuarioController', 'variable' => 'asdf', 'usuarios' => $usuarios, //Mandando variables al html.twig para que se muestren
+            'controller_name' => 'UsuarioController', 'variable' => 'asdf', 'usuarios' => $usuarios, 'mensajeextra' => $mensajeextra //Mandando variables al html.twig para que se muestren
         ]);
     }
 
@@ -48,7 +51,7 @@ final class UsuarioController extends AbstractController
     }
 
     #[Route('/usuario/nuevo', name: 'app_usuario_new')]
-    public function new(Request $request, EntityManagerInterface $manager, UsuarioRepository $repository): Response{ //Recibe la request en caso de que se llegue aqui mediante el submit (POST)
+    public function new(Request $request, EntityManagerInterface $manager, UsuarioRepository $repository, SessionInterface $session): Response{ //Recibe la request en caso de que se llegue aqui mediante el submit (POST)
         
         $usuario = new Usuario();
 
@@ -59,6 +62,8 @@ final class UsuarioController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){ //Este codigo se ejecutara con el submit, ya que mandara a esta misma url una peticion POST con todos los datos (el isValid es para comprobar las validaciones)
             $manager->persist($usuario);
             $manager->flush(); //Insertar en la base de datos
+            $idmostrar = $usuario->getId();
+            $session->set('mensajeextra', "El usuario $idmostrar ha sido creado con exito");
             return $this->redirectToRoute('app_usuario'); //Redirigir a otra pagina
         }
         return $this->render('usuario/new.html.twig', [

@@ -21,7 +21,7 @@
     <p>{{ variable }}</p>
     <a href="{{ path('app_usuario') }}">ver pagina</a> <!--Haciendo referencia a una url definida en un controller usando su name, tambien se puede usar url() para una url absoluta-->
 </div>
-{{ mensajeextra|default('') }} <!--Ignorar si la variable es null-->
+<h2>{{ mensajeextra|default('') }}</h2> <!--Ignorar si la variable es null-->
 <h1>Usuarios</h1>
 <table>
     <thead>

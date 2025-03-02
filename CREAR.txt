@@ -2,12 +2,16 @@ Instalar Symfony y Composer
 
 symfony check:requirements          Comprobar si todo esta bien para ejecutar symfony
 
-symfony new proyecto            Crear un nuevo proyecto
+symfony new proyecto            Crear un nuevo proyecto (--webapp para instalar algunos paquetes automaticamente)
 
 symfony serve           Iniciar un proyecto de Symfony
 
 la configuracion esta en .env y .env.dev
     Se puede cambiar la url de conexion a la base de datos desde alli
+
+Crear el archivo src/Controller/SessionController.php para poder manejar las sesiones y los datos segun el usuario
+
+Crear la carpeta src/Services y crear todos los paquetes/servicios personalizados alli
 
 composer require symfony/twig-bundle            Instalar un plugin al proyecto (en este caso para manejar mejor los html)
 composer require --dev symfony/maker-bundle         Instalar un plugin que solo funciona durante el desarrollo
@@ -16,11 +20,14 @@ composer require --dev orm-fixtures         Para insertar datos de ejemplo en la
 composer require --dev symfony/profiler-pack        Para ver mas informacion sobre las peticiones
 composer require symfony/form           Para mejor manejo de formularios
 composer require symfony/validator          Para validaciones de propiedades en servidor (se especifican en el archivo de la entity)
+composer require symfony/var-dumper         Para correcto funcionamiento de las cookies
 
 php bin/console list            Lista de comandos instalados para el proyecto (como maker, que se instala con --dev)
+php bin/console debug:router            Ver todas las rutas de los controllers
+php bin/console debug:container         Ver todos los servicios de la aplicacion
 php bin/console make:controller         Crear rapidamente un nuevo archivo de controller y su respectivo html.twig
 php bin/console make:form           Crear un archivo de formulario con los datos de un entity
-php bin/console debug:router            Ver todas las rutas de los controllers
+php bin/console make:crud           Crea todas las vistas y funciones en el controlador y forms y etc para hacer un crud sobre una entidad
 
 Crear un controller (como el de /src/Controller/PurebaController.php)
 
