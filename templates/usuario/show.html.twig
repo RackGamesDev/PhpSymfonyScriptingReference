@@ -8,5 +8,6 @@
 <p>nombre: {{ usuario.nombre }}</p>
 <p>nick: {{ usuario.nick }}</p>
 <p>numero: {{ usuario.numero }}</p>
-
+<a href="{{ path('app_usuario_edit', {'id': usuario.id}) }}">editar</a>
+<a href="{{ path('app_usuario_delete', {'id': usuario.id}) }}">borrar</a>
 {% endblock %}

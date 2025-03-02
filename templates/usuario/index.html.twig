@@ -46,6 +46,8 @@
                 <td>
                     <!--Pasando parametros a un path en twig-->
                     <a href="{{ path('app_usuario_show', {'id': usuario.id}) }}">Revisar</a>
+                    <a href="{{ path('app_usuario_edit', {'id': usuario.id}) }}">Editar</a>
+                    <a href="{{ path('app_usuario_delete', {'id': usuario.id}) }}">Borrar</a>
                 </td>
             </tr>
         {% endfor %}

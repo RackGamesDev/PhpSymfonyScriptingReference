@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}borrar{% endblock %}
+{% block body %}
+<h1>Borrar</h1>
+<p>Estas seguro de borrar el usuario con id: {{ id }}</p>
+<!--Este form se enviara de nuevo a la misma url de borrar, pero con el metodo post, donde si se borrara del todo-->
+<form method="post">
+    <button>si</button>
+    <a href="{{ path('app_usuario') }}">no</a>
+</form>
+{% endblock %}

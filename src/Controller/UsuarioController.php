@@ -17,19 +17,19 @@ final class UsuarioController extends AbstractController
     #[Route('/usuario', name: 'app_usuario')] //Se le pone tanto la url como un nombre
     public function index(UsuarioRepository $repository): Response //El objeto que usa por parametros se manda desde el servicio, un EntityRepository sirve para manejar consultas relacionadas con esa tabla
     {
-
-        $usuarios = $repository->findAll(); //Se obtienen todos los registros de la tabla gracias al Repository
+        //$usuarios = $repository->findAll(); //Se obtienen todos los registros de la tabla gracias al Repository
+        $usuarios = $repository->findBy([], ['id' => 'ASC']); //Se obtienen todos los registros de la tabla ordenados por el campo nombre de forma ascendente
 
         dump($usuarios); //Mostrar rapidamente variables en el html
         //dd($usuarios); //Hace lo mismo pero detiene la ejecucion devolviendo una respuesta
-
         return $this->render('usuario/index.html.twig', [
-            'controller_name' => 'UsuarioController', 'variable' => 'asdf', 'usuarios' => $usuarios //Mandando variables al html.twig para que se muestren
+            'controller_name' => 'UsuarioController', 'variable' => 'asdf', 'usuarios' => $usuarios, //Mandando variables al html.twig para que se muestren
         ]);
     }
 
     #[Route('/usuario/{id<\d+>}', name: 'app_usuario_show')] //Usando variables en la url (se pueden poner mas de una ruta en un solo controller) (el <> es un regex)
     public function show($id, UsuarioRepository $repository): Response{ //Las variables de la url entraran a la funcion por parametros
+
         //$usuario = $repository->findOneBy(['id' =>  $id]); //Se obtiene un registro de la tabla (comparando todos los elementos de ese array asociativo)
         $usuario = $repository->find($id); //Obtiene el registro con ese id (mas rapido)
         if ($usuario === null){
@@ -48,7 +48,7 @@ final class UsuarioController extends AbstractController
     }
 
     #[Route('/usuario/nuevo', name: 'app_usuario_new')]
-    public function new(Request $request, EntityManagerInterface $manager): Response{ //Recibe la request en caso de que se llegue aqui mediante el submit (POST)
+    public function new(Request $request, EntityManagerInterface $manager, UsuarioRepository $repository): Response{ //Recibe la request en caso de que se llegue aqui mediante el submit (POST)
         
         $usuario = new Usuario();
 
@@ -59,14 +59,38 @@ final class UsuarioController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){ //Este codigo se ejecutara con el submit, ya que mandara a esta misma url una peticion POST con todos los datos (el isValid es para comprobar las validaciones)
             $manager->persist($usuario);
             $manager->flush(); //Insertar en la base de datos
-            $idmostrar = $usuario->getId();
-            //ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ
-            return $this->redirectToRoute('app_usuario', ['mensajeextra' => "<h2>Usuario $idmostrar creado con exito</h2>"]); //Redirigir a otra pagina
+            return $this->redirectToRoute('app_usuario'); //Redirigir a otra pagina
         }
-
         return $this->render('usuario/new.html.twig', [
             'form' => $form //Devolver el formulario para imprimirlo en el html
         ]);
     }
 
+    #[Route('/usuario/editar/{id<\d+>}', name: 'app_usuario_edit')]
+    public function edit(Usuario $usuario, Request $request, EntityManagerInterface $manager): Response{
+        //Metodo para editar, se sigue necesitando el form para editar los datos y el entity para saber cual cambiar
+        $form = $this->createForm(UsuarioType::class, $usuario);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $manager->flush();
+            return $this->redirectToRoute('app_usuario');
+        }
+        return $this->render('usuario/edit.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/usuario/borrar/{id<\d+>}', name: 'app_usuario_delete')]
+    public function delete(Request $request, Usuario $usuario, EntityManagerInterface $manager): Response{
+        //Metodo para borrar, se necesita el entity para saber cual borrar
+        if ($request->isMethod('POST')){ //Si se llega a aqui con POST (osea desde el form de confirmar) se borra del todo
+            $manager->remove($usuario); //Borrar un registro
+            $manager->flush();
+            return $this->redirectToRoute('app_usuario');
+        }
+        
+        return $this->render('usuario/delete.html.twig', [
+            'id' => $usuario->getId(),
+        ]);
+    }
 }
